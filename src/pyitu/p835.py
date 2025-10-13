@@ -1,6 +1,8 @@
 import numpy as np
 
-def environment( H=None , Z=None ):
+__desc__=""" Reference atmospheres """
+
+def atmosphere_environment( H=None , Z=None ):
     HtoZ = lambda h : 6356.766*h/(6356.766-h)
     ZtoH = lambda z : 6356.766*z/(6356.766+z)
 
