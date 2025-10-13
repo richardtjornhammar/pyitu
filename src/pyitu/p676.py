@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+__desc__ = """ Attenuation by atmospheric gases and related effects """
+
 # Recommendation ITU-R P.676-13
 
 TABLE1 = """50.474214
