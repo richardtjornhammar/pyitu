@@ -1,28 +1,33 @@
+lic_ = """
+   Copyright 2025 Richard Tjörnhammar
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+"""
 import numpy as np
 
 c0 = 299792458.0
 
-def eps_water_double_debye_0(f_GHz, T_C=15.0):
+def water_permittivity_double_debye(f_GHz: float, T_C: float = None) -> complex:
+    # T_C for temperature dependance around dielectric standard at 20^oC
     f_Hz = f_GHz*1e9
     eps_s, eps_1, eps_inf = 78.3, 5.2, 4.9
     tau1, tau2 = 8.27e-12, 0.10e-12
+    if not T_C is None :
+        T_ref = 20.0
+        dT = T_C - T_ref
+        eps_s *= (1.0 - 0.002 * dT)
+        tau1 *= (1.0 - 0.02 * dT/10.0)
     w = 2*pi*f_Hz
-    term1 = (eps_s - eps_1) / (1.0 - 1j*w*tau1)
-    term2 = (eps_1 - eps_inf) / (1.0 - 1j*w*tau2)
-    return eps_inf + term1 + term2
-
-def water_permittivity_double_debye_0(f_GHz: float, T_C: float = 20.0) -> complex:
-    # T_C for temperature dependance around dielectric standard at 20^oC
-    eps_s = 78.3
-    eps_1 = 5.2
-    eps_inf = 4.9
-    tau1 = 8.27e-12
-    tau2 = 0.10e-12
-    T_ref = 20.0
-    dT = T_C - T_ref
-    eps_s *= (1.0 - 0.002 * dT)
-    tau1 *= (1.0 - 0.02 * dT/10.0)
-    w = 2*pi*f_GHz*1e9
     term1 = (eps_s - eps_1) / (1.0 - 1j*w*tau1)
     term2 = (eps_1 - eps_inf) / (1.0 - 1j*w*tau2)
     return eps_inf + term1 + term2
