@@ -19,7 +19,14 @@ import pandas as pd
 import scipy.interpolate as scint
 from tooling import build_table
 
-__desc__=""" Specific attenuation model for rain for use in prediction methods """
+__desc__=""" Specific attenuation model for rain for use in prediction methods 
+methods:
+    rain_gamma( freqs_GHz , R_mmph , itu_df=table5 , pol=None )
+        pol - polaristaion either V, H or None
+        itu_df - table5 from https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.838-3-200503-I!!PDF-E.pdf
+        freqs_GHz - the frequency in GHz
+        R_mmph - the rain rate in mm/h or kg/m^2
+"""
 
 table1 = """j,aj,bj,cj,mk,ck
 1,-5.33980,-0.10008,1.13098,-0.18961,0.71147
