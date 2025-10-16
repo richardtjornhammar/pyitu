@@ -17,8 +17,39 @@ import numpy as np
 from numpy import pi
 import pandas as pd
 import scipy.interpolate as scint
+from tooling import build_table
 
 __desc__=""" Specific attenuation model for rain for use in prediction methods """
+
+table1 = """j,aj,bj,cj,mk,ck
+1,-5.33980,-0.10008,1.13098,-0.18961,0.71147
+2,-0.35351,1.26970,0.45400,-0.18961,0.71147
+3,-0.23789,0.86036,0.15354,-0.18961,0.71147
+4,-0.94158,0.64552,0.16817,-0.18961,0.71147"""
+table1 = build_table(table1)
+
+table2="""j,aj,bj,cj,mk,ck
+1,-3.80595,0.56934,0.81061,-0.16398,0.63297
+2,-3.44965,-0.22911, 0.51059,-0.16398,0.63297
+3,-0.39902,0.73042,0.11899,-0.16398,0.63297
+4,0.50167,1.07319,0.27195,-0.16398,0.63297"""
+table2 = build_table(table2)
+
+table3="""j,aj,bj,cj,ma,ca
+1,-0.14318,1.82442,-0.55187,0.67849,-1.95537
+2,0.29591,0.77564,0.19822,0.67849,-1.95537
+3,0.32177,0.63773,0.13164,0.67849,-1.95537
+4,-5.37610,-0.96230,1.47828,0.67849,-1.95537
+5,16.1721,-3.29980,3.43990,0.67849,-1.95537"""
+table3 = build_table(table3)
+
+table4="""j aj bj cj ma ca
+1,-0.0777,1,2.33840,-0.76284,-0.053739,0.83433
+2,0.56727,0.95545,0.54039,-0.053739,0.83433
+3,-0.20238,1.14520,0.26809,-0.053739,0.83433
+4,-48.2991,0.791669,0.116226,-0.053739,0.83433
+5,48.5833,0.791459,0.116479,-0.053739,0.83433"""
+table4 = build_table(table4)
 
 table5 = """GHz,kH,alphaH,kV,alphaV
 1,0.0000259,0.9691,0.0000308,0.8592
@@ -137,9 +168,7 @@ table5 = """GHz,kH,alphaH,kV,alphaV
 800,1.4335,0.6315,1.4321,0.6334
 900,1.4050,0.6353,1.4056,0.6351
 1000,1.3795,0.6396,1.3822,0.6365"""
-table5 = [v.split(',') for v in table5.split('\n')]
-table5 = pd.DataFrame(table5[1:],columns=table5[0])
-table5.index=table5.iloc[:,0]
+table5 = build_table(table5)
 
 def rain_gamma( freqs_GHz , R_mmph , itu_df=table5 , pol=None ):
     fmax   = np.max( itu_df.index.values )
