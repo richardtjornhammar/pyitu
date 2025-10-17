@@ -20,6 +20,7 @@ from .p835 import atmosphere_environment
 default_env = atmosphere_environment( Z=0.1 )
 
 __desc__ = """ Attenuation by atmospheric gases and related effects 
+# Recommendation ITU-R P.676-13
 
 def gasattenuation( freq , p=default_env[0] , e=default_env[1] , T=default_env[2]) :
     gamma = 0.1820 * freq * ( NbisO(freq,p,e,T) + NbisWater(freq,p,e,T) )    
@@ -43,9 +44,7 @@ def help()
 """
 
 def help() :
-	print(__desc__)
-	
-# Recommendation ITU-R P.676-13
+    print(__desc__)
 
 TABLE1 = """50.474214
 0.975
