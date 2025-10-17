@@ -1,2 +1,2 @@
 name = "pyitu"
-import .tooling as tooling
+import tooling
