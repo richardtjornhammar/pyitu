@@ -15,7 +15,18 @@ lic_ = """
 """
 import numpy as np
 
-__desc__=""" Reference atmospheres """
+__desc__=""" Reference atmospheres 
+https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.835-7-202408-I!!PDF-E.pdf
+
+def atmosphere_environment( H=None , Z=None )
+    # calculates the environment at a height above sea level
+    Z = geometric height
+    H = geopotential height
+    Specify either
+"""
+
+def help() :
+    print(__desc__)
 
 def atmosphere_environment( H=None , Z=None ):
     HtoZ = lambda h : 6356.766*h/(6356.766-h)
