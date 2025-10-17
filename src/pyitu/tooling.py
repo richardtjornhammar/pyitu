@@ -43,8 +43,10 @@ def fuzzy_find(v,arr) :
     idx = sorted( [(f,i) for (i,f) in zip( range(len(arr)),np.abs(arr-v) ) ] ,key = lambda x:x[0] )[0][1]
     return idx
 
-def build_table(table):
+def build_table(table,bIsNumeric=True):
    table = [v.split(',') for v in table.split('\n')]
    table = pd.DataFrame(table[1:],columns=table[0])
+   if bIsNumeric :
+      table = table.apply(pd.to_numeric)
    table.index = table.iloc[:,0]
    return ( table )
