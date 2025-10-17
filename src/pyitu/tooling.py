@@ -17,6 +17,25 @@ import numpy as np
 import pandas as pd
 c0 = 299792458.0
 
+__desc__=""" Codes that contain generic helper funktions or constants
+c0 - speed of light (299792458 m/s)
+
+def water_permittivity_double_debye(f_GHz, T_C)
+    calculates the complex water permittivity in [D]
+
+def marshall_palmer_DSD(D_mm, R_mmph)
+    calculates rain drop distributions for size D [mm] at a rainrate R [mm/h]
+
+def build_table(table, bIsNumeric=True, sep=',', newline='\n') 
+    constructs a pandas table from a docstring
+    bIsNumeric forces all fields to be numeric
+    sep separates column cells
+    newline separates rows
+"""
+
+def help() :
+    print(__desc__)
+
 def water_permittivity_double_debye(f_GHz: float, T_C: float = None) -> complex:
     # T_C for temperature dependance around dielectric standard at 20^oC
     f_Hz = f_GHz*1e9
@@ -43,8 +62,8 @@ def fuzzy_find(v,arr) :
     idx = sorted( [(f,i) for (i,f) in zip( range(len(arr)),np.abs(arr-v) ) ] ,key = lambda x:x[0] )[0][1]
     return idx
 
-def build_table(table,bIsNumeric=True):
-   table = [v.split(',') for v in table.split('\n')]
+def build_table( table, bIsNumeric=True, sep=',', newline='\n' ):
+   table = [v.split(sep) for v in table.split(newline)]
    table = pd.DataFrame(table[1:],columns=table[0])
    if bIsNumeric :
       table = table.apply(pd.to_numeric)
