@@ -15,6 +15,25 @@ lic_ = """
 """
 import numpy as np
 
+__desc__=""" Codes specific to communication or fixed links
+
+def simulate_qam_ber(snr_db, num_symbols, qam=16)
+    simulates the SnR Eb/N0 in dB
+    - snr_db (array): List of SNR values in dB.
+    - num_symbols (int): Number of symbols to transmit per SNR point.
+        num_symbols is proportional to the inverse of the wanted BER level
+
+def generate_qam_constellation(M)
+    generates the I/Q levels for a modulation order M
+
+def constallation_diagram( qam , bVerbose=False ) 
+    generates the I/Q meshgrids and visual boolean constallation diagram at modulation qam
+    
+"""
+
+def help() :
+    print(__desc__)
+
 bin2dec = lambda bits : int(np.sum( [ 2**j * bits[len(bits)-1-j] for j in range(len(bits)) ] , axis=0 ) )
 def dec2bin(x):
     return dec2bin(x//2) + [x%2] if x > 1 else [x]
