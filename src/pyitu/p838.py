@@ -17,7 +17,7 @@ import numpy as np
 from numpy import pi
 import pandas as pd
 import scipy.interpolate as scint
-from tooling import build_table
+from .tooling import build_table
 
 __desc__=""" Specific attenuation model for rain for use in prediction methods 
 methods:
