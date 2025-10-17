@@ -15,9 +15,36 @@ lic_ = """
 """
 import pandas as pd
 import numpy as np
+from .p835 import atmosphere_environment
 
-__desc__ = """ Attenuation by atmospheric gases and related effects """
+default_env = atmosphere_environment( Z=0.1 )
 
+__desc__ = """ Attenuation by atmospheric gases and related effects 
+
+def gasattenuation( freq , p=default_env[0] , e=default_env[1] , T=default_env[2]) :
+    gamma = 0.1820 * freq * ( NbisO(freq,p,e,T) + NbisWater(freq,p,e,T) )    
+    return ( gamma )
+
+def NbisN(freq,p,e,T) :
+    # ND( f ) is the dry continuum due to pressure-induced nitrogen absorption
+
+def NbisO(freq,p,e,T, bNitrogen=True ) :
+    # Oxygen vapour peaks
+    # Sum_i,oxygen Si * Fi
+    # S is the strength of the oxygen line
+    # F is the lineshape of the oxygen line
+    # Includes if bNitrogen > ND( f ) or NbisN(freq,p,e,T) is the dry continuum due to pressure-induced nitrogen absorption
+
+def NbisWater(freq,p,e,T) :
+    # Water vapour peaks
+
+def help()
+    # Prints this message
+"""
+
+def help() :
+	print(__desc__)
+	
 # Recommendation ITU-R P.676-13
 
 TABLE1 = """50.474214
@@ -578,60 +605,6 @@ TABLE2="""22.235080
 table1_df = pd.DataFrame(np.array([float(f) if len(f)>0 else 0 for f in TABLE1.split('\n')]).reshape(-1,7), columns=["f0","a1","a2","a3","a4","a5","a6"] )
 table2_df = pd.DataFrame(np.array([float(f) if len(f)>0 else 0 for f in TABLE2.split('\n')]).reshape(-1,7), columns=["f0","b1","b2","b3","b4","b5","b6"] )
 
-def environments_ITU_R_P_835( H=None , Z=None ):
-    HtoZ = lambda h : 6356.766*h/(6356.766-h)
-    ZtoH = lambda z : 6356.766*z/(6356.766+z)
-
-    if H is None and Z is None :
-        print("MUST SPECIFY A ALTITUDE HEIGHT TYPE (GEOPOTENTIAL OR GEOMETRIC)")
-        exit(1)
-
-    if H is None :
-        H = ZtoH(Z)
-    if Z is None :
-        Z = HtoZ(H)
-
-    a = [95.571899,-4.011801,6.424731*10**(-2),-4.789606*10**(-4),1.340543*10**(-6)]
-
-    if True : # geopotential height 𝐻
-        if H<=11 :
-            T = 288.15-6.5*H
-            p = 1013.25*( 288.15/(288.15-6.5*H) )**(-34.1632/6.5)
-        elif H>11 and H<=20 :
-            T = 216.65
-            p = 226.3226*np.exp(-34.1632*(H-11)/216.65)
-        elif H>20 and H<=32 :
-            T = 216.65 + H - 20
-            p = 54.74980*( 216.65/(216.65+(H-20)) )**(34.1632)
-        elif H>32 and H<=47 :
-            T = 228.65 + 2.8 *( H - 32 )
-            p = 8.680422*( 228.65/( 228.65 + 2.8*(H-32)) )**(34.1632/2.8)
-        elif H>47 and H<=51 :
-            T = 270.65
-            p = 1.109106*np.exp(-34.1632*(H-47)/270.65)
-        elif H>51 and H<=71 :
-            T = 270.65 - 2.8*( H - 51 )
-            p = 0.6694167 * ( 270.65/(270.65-2.8*(H-51)) )**(-34.1632/2.8)
-        elif H>71 and H<=84.852 :
-            T = 214.65 - 2.0*( H - 71 )
-            p = 0.03956649 * ( 214.65/(214.65-2.0*(H-71)) )**(-34.1632/2.0)
-        else :
-            if True : # geometric height
-                p = np.sum([ ai*Z**i for (ai,i) in zip(a,range(len(a))) ])
-                if Z>=86 and Z<91:
-                    T = 186.8673 
-                elif Z>=91 and Z<100:
-                    T = 263.1905 - 76.3232*( 1 - ((Z-91)/19.9429)**2 )**0.5
-                else :
-                    print("ERROR")
-    theta = 300/T
-
-    water_vapor_density = 7.5 * np.exp(-Z*0.5)
-    e = water_vapor_density * T / 216.7
-
-    environment = [p,e,T,theta]
-    return ( environment )
-
 def linestrength_S(	type = "oxygen",
 			p = 1 , e = 1, T = 300,
                         data = {"oxygen":table1_df , "water":table2_df} ) :
@@ -733,7 +706,7 @@ def NbisWater(freq,p,e,T) :
     F = lineshape_F(freq,"water",p,e,T)
     return( np.dot(S,F) )
 
-def gasattenuation(freq,p,e,T) :
+def gasattenuation( freq , p=default_env[0] , e=default_env[1] , T=default_env[2]) :
     gamma = 0.1820 * freq * ( NbisO(freq,p,e,T) + NbisWater(freq,p,e,T) )    
     return ( gamma )
 
@@ -741,7 +714,7 @@ if __name__=='__main__' :
     print("GAS")
     print( table1_df )
     print( table2_df )
-    env = environments_ITU_R_P_835( Z=0.1 ) # 10 km
+    env = atmosphere_environment( Z=0.1 )
     p   = env[0]
     e   = env[1]
     T   = env[2]
@@ -759,7 +732,7 @@ if __name__=='__main__' :
         Z = [h for h in range(0,100)]
         T,P = [],[]
         for z in Z :
-            env = environments_ITU_R_P_835( Z=z )
+            env = atmosphere_environment( Z=z )
             T.append(env[2])
             P.append(env[0])
         import matplotlib.pyplot as plt
