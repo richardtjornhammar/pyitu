@@ -31,10 +31,8 @@ def NbisN(freq,p,e,T) :
 
 def NbisO(freq,p,e,T, bNitrogen=True ) :
     # Oxygen vapour peaks
-    # Sum_i,oxygen Si * Fi
-    # S is the strength of the oxygen line
-    # F is the lineshape of the oxygen line
-    # Includes if bNitrogen > ND( f ) or NbisN(freq,p,e,T) is the dry continuum due to pressure-induced nitrogen absorption
+    # Include if bNitrogen the dry continuum due to pressure-induced nitrogen absorption > 
+    #     ND( f ) or NbisN(freq,p,e,T)  
 
 def NbisWater(freq,p,e,T) :
     # Water vapour peaks
