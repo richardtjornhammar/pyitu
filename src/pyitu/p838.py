@@ -28,6 +28,9 @@ methods:
         R_mmph - the rain rate in mm/h or kg/m^2
 """
 
+def help() :
+    print(__desc__)
+
 table1 = """j,aj,bj,cj,mk,ck
 1,-5.33980,-0.10008,1.13098,-0.18961,0.71147
 2,-0.35351,1.26970,0.45400,-0.18961,0.71147
