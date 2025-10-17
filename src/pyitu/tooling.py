@@ -14,7 +14,7 @@ lic_ = """
    limitations under the License.
 """
 import numpy as np
-
+import pandas as pd
 c0 = 299792458.0
 
 def water_permittivity_double_debye(f_GHz: float, T_C: float = None) -> complex:
